@@ -1,7 +1,6 @@
 const express = require('express');
 const WorkoutRouter = express.Router();
 const Workout = require('./models/workoutSchema');
-
 WorkoutRouter.post('/workoutDetails', async (req, res) => {
   try {
     const { workoutDetails } = req.body;
@@ -46,7 +45,9 @@ WorkoutRouter.get('/:workoutId', async (req, res) => {
 });
 WorkoutRouter.put('/:workoutId', async (req, res) => {
   const workoutId = req.params.workoutId;
+  console.log("id",workoutId)
   const updatedWorkoutData = req.body;
+  console.log("data",updatedWorkoutData)
   try {
     // Find the existing workout by its ID
     const existingWorkout = await Workout.findById(workoutId);
@@ -71,13 +72,47 @@ WorkoutRouter.put('/:workoutId', async (req, res) => {
     res.status(200).json(updatedWorkout);
   } catch (error) {
     // Handle any errors that occur during the update process
+    console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+// WorkoutRouter.put('/:workoutId', async (req, res) => {
+//   const workoutId = req.params.workoutId;
+//   console.log("id",workoutId)
+//   const updatedWorkoutData = req.body.workoutDetails[0]; // Get the workout details from the request body
 
+//   try {
+//     const existingWorkout = await Workout.findById(workoutId);
+//     if (!existingWorkout) {
+//       return res.status(404).json({ error: 'Workout not found' });
+//     }
 
+//     // Update the workout properties from the request body
+//     existingWorkout.workoutDetails[0].title = updatedWorkoutData.title;
+//     existingWorkout.workoutDetails[0].date = updatedWorkoutData.date;
+//     existingWorkout.workoutDetails[0].startTime = updatedWorkoutData.startTime;
+//     existingWorkout.workoutDetails[0].endTime = updatedWorkoutData.endTime;
 
+//     // Add new exercises to the existing workout's exercises array
+//     existingWorkout.workoutDetails[0].exercises.push(...updatedWorkoutData.exercises);
 
+//     // Validate the updated workout data
+//     const validationError = existingWorkout.validateSync();
+//     if (validationError) {
+//       return res.status(400).json({ error: validationError.message });
+//     }
+
+//     // Save the updated workout
+//     const updatedWorkout = await existingWorkout.save();
+
+//     // Respond with the updated workout
+//     res.status(200).json(updatedWorkout);
+//   } catch (error) {
+//     // Handle errors
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 WorkoutRouter.delete('/:workoutId', async (req, res) => {
   const workoutId = req.params.workoutId;
   try {
@@ -94,4 +129,8 @@ WorkoutRouter.delete('/:workoutId', async (req, res) => {
     return res.status(500).json({ error: 'Error deleting workout' });
   }
 });
+
+
+
+
 module.exports = WorkoutRouter;

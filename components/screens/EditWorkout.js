@@ -1,10 +1,10 @@
 import React, { useState,useEffect,useRef } from 'react';
-import { View, Text, ScrollView, TextInput, FlatList, TouchableOpacity, StyleSheet,Image,Alert,Pressable,PanResponder} from 'react-native';
+import { View,Linking, Text, ScrollView, TextInput, FlatList, TouchableOpacity, StyleSheet,Image,Alert,Pressable,PanResponder} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
-import { List ,IconButton, Portal, Dialog, Button} from 'react-native-paper';
+import { List ,Modal, Portal, Dialog, Button} from 'react-native-paper';
 import { baseUrl } from '../baseUrl/baseUrl';
 import { format ,parse} from 'date-fns';
 import { Calendar} from 'react-native-calendars';
@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from "jwt-decode";
 import Share from 'react-native-share';
 import { isValid } from 'date-fns';
+import Dumbbell from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const EditWorkout = (props) => {
   const {navigation} =props;
@@ -29,24 +30,61 @@ const EditWorkout = (props) => {
   const [selectedExercise, setSelectedExercise] = useState([]);
   const [WorkoutTitle,setWorkoutTitle]=useState('')
   const [expanded, setExpanded] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [exerciseToDelete, setExerciseToDelete] = useState(null);
   const route = useRoute();
-  const workoutId = route.params?.workoutId;
+  // const workoutId = route.params?.workoutId;
+  const [workoutId, setWorkoutId] = useState(route.params.workoutId);
+  useEffect(() => {
+    // This code inside useEffect will run after the component renders
+    console.log('Workout ID being edit:', workoutId);
+  }, [workoutId]);
   const bottomSheetRef = useRef();
   const [exerciseWeight, setExerciseWeight] = useState([]);
   const [exerciseReps, setExerciseReps] = useState([]);
   const [selectedMoodValue, setSelectedMoodValue] = useState(''); // Selected mood value, e.g., "I am Happy"
   const [selectedMoodImage, setSelectedMoodImage] = useState(null); // Selected mood image source
   const BottomSheetRate = useRef();
+   const [editExercise, setEditExercise] = useState([]);
+  const [exerciseData, setExerciseData] = useState([]); // Initialize as an empty array
+// //   // useEffect(() => {
+// //   //   if (route.params?.editExercises) {
+// //   //     const exercisesFromParams = route.params.editExercises[0];
+// //   //     console.log("Exercises from params:", exercisesFromParams);
+      
+// //   //     // Merge the exercises from params with the existing exercises
+// //   //     exercisesFromParams.forEach((exercise) => {
+// //   //       formattedExercises.push({
+// //   //         name: exercise.name,
+// //   //         icon: exercise.icon,
+// //   //         sets: [],
+// //   //       });
+// //   //     });
+  
+// //   //     console.log("Merging exercises...");
+// //   //     setSelectedExercise((prevExercises) => [...prevExercises, ...exercisesFromParams]);
+// //   //   } 
+// //   // }, [route.params?.editExercises]);
+  useEffect(() => {
+    if (route.params?.editExercises) {
+      const exercisesFromParams = route.params.editExercises[0];
+      console.log("Exercises from params:", exercisesFromParams);
+      // const initialData = exercisesFromParams.map((exercise) => ({
+      //   sets: [{ weight: '', reps: '' }], // Initialize with one set
+      // }));
+      const updatedExercises = exercisesFromParams.map((exercise) => ({
+        name: exercise.exerciseName,
+        icon: exercise.icon,
+        sets: [{ weight: '', reps: '' }]
+            }));
+      console.log("Merging exercises...");
+      setSelectedExercise((prevExercises) => [...prevExercises, ...updatedExercises]);
+    }
+  }, [route.params?.editExercises]);
+  console.log("being",selectedExercise)
+  
   const showBottomSheet = () => {
     bottomSheetRef.current.open();
-  };
-  const [openIndex, setOpenIndex] = useState(null);
-  const toggleAccordionCustom = (exerciseIndex) => {
-    if (openIndex === exerciseIndex) {
-      setOpenIndex(null);
-    } else {
-      setOpenIndex(exerciseIndex);
-    }
   };
   const getAuthToken = async () => {
     try {
@@ -141,12 +179,13 @@ const specificWorkoutDetails = async () => {
           name: exercise.name,
           icon: exercise.icon,
           sets: setsArray, 
+          id: exercise._id,
         };
       });
         setSelectedExercise(formattedExercises);
         setSelectedMoodValue(firstWorkout.moodValue);
         setSelectedMoodImage(firstWorkout.moodImage);
-       console.log("array",formattedExercises)
+       console.log("array with id",formattedExercises)
     }
     console.log('Fetched Workout Data:', workoutData);
   } catch (error) {
@@ -192,8 +231,13 @@ const specificWorkoutDetails = async () => {
     setEndTime(currentEndTime);
   };
   const updateWorkout = async () => {
+
     try {
       // Prepare the updated workout data to send in the request
+      // if (!workoutId) {
+      //   console.error('Workout ID is missing');
+      //   return; // Exit the function if workoutId is missing
+      // }
       const formattedExercises = selectedExercise.map((exercise) => ({
         name: exercise.name,
         icon: exercise.icon,
@@ -208,10 +252,10 @@ const specificWorkoutDetails = async () => {
             startTime: format(startTime, 'hh:mm a'),
             endTime: format(endTime, 'hh:mm a'),
             exercises: formattedExercises,
-            moodValue: selectedMoodValue, 
-            moodImage: selectedMoodImage, // This contains the updated exercises array     
+            moodValue: selectedMoodValue || '', 
+            moodImage: selectedMoodImage || '', // This contains the updated exercises array     
       };
-      console.log("workouTdETAILS",updatedWorkoutData)
+      console.log("workouTdETAILS",formattedExercises)
       const response = await axios.put(`${baseUrl}workout/${workoutId}`,
       {workoutDetails: [updatedWorkoutData]},
       );
@@ -235,11 +279,37 @@ const specificWorkoutDetails = async () => {
     
     }
   };
-  const handleExerciseDeletion = (exerciseIndex) => {
-    const updatedExercises = [...selectedExercise];
-    updatedExercises.splice(exerciseIndex, 1);
-    setSelectedExercise(updatedExercises);
+  // const handleExerciseDeletion = (exerciseIndex) => {
+  //   const updatedExercises = [...selectedExercise];
+  //   updatedExercises.splice(exerciseIndex, 1);
+  //   setSelectedExercise(updatedExercises);
+  //   setDeleteModalVisible(false)
+  // };
+  const handleExerciseDeletion = () => {
+    console.log("inside the function of exercise deletionexercise")
+
+    const { id, index } = exerciseToDelete;
+    console.log("id to del",exerciseToDelete)
+
+    axios.delete(`${baseUrl}delete/${workoutId}/${id}`)
+      .then(response => {
+        if (response.status === 200) {
+          const updatedExercises = [...selectedExercise];
+          updatedExercises.splice(index, 1);
+          setSelectedExercise(updatedExercises);
+          setDeleteModalVisible(false);
+          console.log(`Exercise with ID ${id} deleted successfully`);
+        } else {
+          console.error('Exercise deletion failed');
+          // Handle error state here if the API request fails
+        }
+      })
+      .catch(error => {
+        console.error('Error during exercise deletion:', error);
+        // Handle network error or other errors during the DELETE request
+      });
   };
+  
   // const handleWeightChange = (name, text) => {
   //   setSelectedExercise((prevExercises) => {
   //     return prevExercises.map((exercise) => {
@@ -389,7 +459,10 @@ const specificWorkoutDetails = async () => {
     }
     bottomSheetRef.current.close();
   };
-  const handleShareWorkout = () => {
+
+  
+  
+  const handleShareWorkout = async () => {
       // Check if startTime and endTime are valid dates
   if (!isValid(startTime) || !isValid(endTime)) {
     showMessage({
@@ -399,7 +472,7 @@ const specificWorkoutDetails = async () => {
     });
     return;
   }
-  // Prepare the content to share using the data received as arguments
+//   // Prepare the content to share using the data received as arguments
   // const shareContent = `
   //   Workout Title: ${WorkoutTitle}
   //   Date: ${selectedDate}
@@ -410,6 +483,7 @@ const specificWorkoutDetails = async () => {
   //     (exercise) => `- ${exercise.name}, Weight: ${exercise.weight}, Reps: ${exercise.reps}`
   //   ).join('\n')}
   // `;
+  //FOR SETS
   const shareContent = `
   Workout Title: ${WorkoutTitle}
   Date: ${selectedDate}
@@ -424,10 +498,12 @@ const specificWorkoutDetails = async () => {
     return `- ${exercise.name}\n${setsInfo}`;
   }).join('\n')}
 `;
+
+  // Prepare the content to share using the deep link URL
   const options = {
     message: shareContent,
     title: 'Share Workout Details',
-    subject: 'Workout Details', // For email
+    subject: 'Workout Details',
   };
   // Open the share dialog
   Share.open(options)
@@ -438,7 +514,6 @@ const specificWorkoutDetails = async () => {
   };
   return (
       
-     <ScrollView style={{flex:1,backgroundColor:"#FEFCF3"}}>
     <View style={WorkoutStyle.container}>
     <FlashMessage></FlashMessage>
       <View style={WorkoutStyle.row}>
@@ -505,14 +580,26 @@ const specificWorkoutDetails = async () => {
           />
         )}
       </View>
+      <View style={WorkoutStyle.row}>
+           <Dumbbell name="dumbbell" size={24} color="#116D6E" style={WorkoutStyle.icon} />
+
+             <TouchableOpacity onPress={() => navigation.navigate('EditExercises')}>
+               <Text style={WorkoutStyle.linkText}>Add Exercise</Text>
+             </TouchableOpacity>
+           </View>
+          
   <View>
-{selectedExercise.map((exercise, exerciseIndex) => (
-  
- 
+{selectedExercise.map((exercise, index) => (
   <List.Accordion
-    key={exerciseIndex}
+    key={exercise.id}
     title={exercise.name}
     onPress={toggleAccordion}
+    onLongPress={() => {
+      setExerciseToDelete({ id: exercise.id, index: index }); 
+      console.log("exercise id to be deleted",exercise.id)
+      setDeleteModalVisible(true); // Open the delete modal
+    }}
+    
     left={(props) => (
       <Image source={{ uri: exercise.icon }} style={WorkoutStyle.exerciseIcon} />
     )} 
@@ -523,7 +610,8 @@ const specificWorkoutDetails = async () => {
         <TextInput
           style={WorkoutStyle.input1}
           //value={set.weight.toString() || ''}
-          value={set.weight !== null ? set.weight.toString() : ''}
+                 value={set?.weight?.toString() || ''}
+          //value={set.weight !== null ? set.weight.toString() : ''}
           keyboardType="numeric"
           placeholder="Weight"
           placeholderTextColor={"black"}
@@ -532,7 +620,8 @@ const specificWorkoutDetails = async () => {
         <TextInput
           style={WorkoutStyle.input2}
           //value={set.reps.toString() || ''}
-          value={set.reps !== null ? set.reps.toString() : ''}
+                     value={set?.reps?.toString() || ''}
+          //value={set.reps !== null ? set.reps.toString() : ''}
           keyboardType="numeric"
           placeholder="Reps"
           placeholderTextColor={"black"}
@@ -565,7 +654,21 @@ const specificWorkoutDetails = async () => {
 ))}
 
 </View>
-
+<Portal>
+        <Modal
+          visible={deleteModalVisible}
+          onDismiss={() => setDeleteModalVisible(false)}
+          contentContainerStyle={WorkoutStyle.modalContainer}
+        >
+          <Text style={{color:"black",marginLeft:12,fontSize:20,}}>Are you sure you want to delete this exercise?</Text>
+          <Button mode="outlined" onPress={handleExerciseDeletion} style={{marginBottom:20,marginTop:22,marginRight:32,marginLeft:32,}}>
+            Delete Exercise
+          </Button>
+          <Button mode="outlined" onPress={() => setDeleteModalVisible(false)} style={{marginBottom:20,marginTop:5,marginRight:32,marginLeft:32,}}>
+            Cancel
+          </Button>
+        </Modal>
+      </Portal>
 
 <View style={WorkoutStyle.containerActionButton}>    
       <BottomSheet ref={bottomSheetRef} 
@@ -610,7 +713,6 @@ const specificWorkoutDetails = async () => {
 
     </View>
    
-    </ScrollView>
   );
 };
 
@@ -672,7 +774,7 @@ const WorkoutStyle = StyleSheet.create({
       },
       linkText: {
         fontSize: 22,
-        color: 'black',
+        color: '#116D6E',
         // textDecorationLine: 'underline',
         marginLeft: 5,
         marginTop:10,
@@ -775,6 +877,13 @@ moodSelect:{
   color:"black",
   marginBottom:12,
 },
+modalContainer: {
+  backgroundColor: 'white',
+  padding: 20,
+  borderRadius: 8,
+  marginLeft:35,
+  marginRight:35,
+},
 DoneButton:{
   padding: 16,
   borderBottomWidth: 1,
@@ -810,3 +919,11 @@ input2: {
 },
 });
 export default EditWorkout;
+
+
+
+
+
+
+
+

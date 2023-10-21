@@ -1,3 +1,3 @@
- let baseUrl='http://10.141.64.100:7000/';
+ let baseUrl='http://192.168.10.8:7000/';
  module.exports=baseUrl;
 

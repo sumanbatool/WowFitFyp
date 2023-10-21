@@ -16,7 +16,8 @@ const WorkoutRouter = require('./workout');
 const newExerciserouter = require('./addNewExercise');
 const ForgotRouter= require('./ForgotPassword')
 const baseUrl=require('./baseUrl');
-const PaymentRoutes=require('./paymentRoutes')
+const PaymentRoutes=require('./paymentRoutes');
+const ExerciseRouter = require('./deleteExercise');
 // Creating app instance to use express functionality
 const app = express();
 // Using Middlewares
@@ -168,6 +169,7 @@ exerciseList.countDocuments({})
   app.use('/add', newExerciserouter)
   app.use('/pass',ForgotRouter)
   app.use('/payments', PaymentRoutes);
+  app.use('/delete',ExerciseRouter)
 // Creating server.
 app.listen(7000, () => {
   console.log('Server started at port 7000');

@@ -1,10 +1,10 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-30:12
-INJECTED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-30:12
-INJECTED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-30:12
-INJECTED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-30:12
-MERGED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-30:12
+ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-31:12
+INJECTED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-31:12
+INJECTED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-31:12
+INJECTED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-31:12
+MERGED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-31:12
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.125.0] C:\Users\HP\.gradle\caches\transforms-3\78849f144acfe48841156c5a1c4cf1ec\transformed\jetified-flipper-network-plugin-0.125.0\AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.125.0] C:\Users\HP\.gradle\caches\transforms-3\024dbf42cdc8215807d769da963f7240\transformed\jetified-flipper-fresco-plugin-0.125.0\AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper:0.125.0] C:\Users\HP\.gradle\caches\transforms-3\7791fe77b8ab9730d0e25ce55c6aa090\transformed\jetified-flipper-0.125.0\AndroidManifest.xml:8:1-18:12
@@ -167,13 +167,13 @@ INJECTED from C:\Users\HP\fyp\android\app\src\debug\AndroidManifest.xml:2:1-13:1
 		INJECTED from C:\Users\HP\fyp\android\app\src\debug\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-30:12
+		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-31:12
 		INJECTED from C:\Users\HP\fyp\android\app\src\debug\AndroidManifest.xml
 	xmlns:tools
 		ADDED from C:\Users\HP\fyp\android\app\src\debug\AndroidManifest.xml:3:5-51
 	android:versionCode
 		INJECTED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-30:12
+		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:1-31:12
 		INJECTED from C:\Users\HP\fyp\android\app\src\debug\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:1:11-69
@@ -210,9 +210,9 @@ ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:7:1-65
 	android:name
 		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:7:18-62
 application
-ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:10:5-29:19
-MERGED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:10:5-29:19
-MERGED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:10:5-29:19
+ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:10:5-30:19
+MERGED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:10:5-30:19
+MERGED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:10:5-30:19
 MERGED from [:notifee_react-native] C:\Users\HP\fyp\node_modules\@notifee\react-native\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
 MERGED from [:notifee_react-native] C:\Users\HP\fyp\node_modules\@notifee\react-native\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-15:19
 MERGED from [:react-native-community_datetimepicker] C:\Users\HP\fyp\node_modules\@react-native-community\datetimepicker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-20
@@ -302,7 +302,7 @@ MERGED from [com.google.android.instantapps:instantapps:1.1.0] C:\Users\HP\.grad
 		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:11:9-40
 		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:11:9-40
 activity#com.fyp.MainActivity
-ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:17:9-28:20
+ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:17:9-29:20
 	android:label
 		ADDED from C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:19:13-45
 	android:launchMode

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { View, TextInput,Platform, StyleSheet, TouchableOpacity, Text, LayoutAnimation,Dimensions, Image, ScrollView,KeyboardAvoidingView, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Modal, Portal, Button } from 'react-native-paper';
@@ -40,10 +40,9 @@ const NewWorkout = (props) => {
   const [selectedExercise, setSelectedExercise] = useState([]);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [exerciseToDelete, setExerciseToDelete] = useState(null);
-  const windowHeight = Dimensions.get('window').height; // Updated: Add selectedExercise state
+  const windowHeight = Dimensions.get('window').height; 
   // const workoutId = route.params?.workoutId;
 //  console.log('recieved id',workoutId)
-// Assuming you have already stored the token in AsyncStorage during login
 const getAuthToken = async () => {
   try {
     const token = await AsyncStorage.getItem('token');

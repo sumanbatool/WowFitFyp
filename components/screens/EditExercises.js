@@ -816,8 +816,8 @@ const EditExercise = (props) => {
           <Image source={{ uri: item.icon }} style={{ width: 50, height: 50 }} />
           <Text style={Liststyles.title}>{item.name}</Text>
           <RadioButton
-            color="#DF2E38"
-            uncheckedColor="#6082B6"
+            color="#116D6E"
+            uncheckedColor="grey"
             value={item.name}
             status={isChecked ? 'checked' : 'unchecked'}
             onPress={() => handleRadioButtonPress(item)}
@@ -906,7 +906,7 @@ const EditExercise = (props) => {
         renderItem={renderExerciseItem}
         keyExtractor={item => item._id.toString()}
         contentContainerStyle={Liststyles.flatlistContent}
-        //ItemSeparatorComponent={() => <View style={Liststyles.separator} />}
+        ItemSeparatorComponent={() => <View style={Liststyles.separator} />}
       />
       <ExerciseButton title='Save' onPress={handleSaveExercises} />
     </View>
@@ -917,7 +917,7 @@ const Liststyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FEFCF3',
   },
   flatlistContent: {
     flexGrow: 1,
@@ -940,6 +940,9 @@ const Liststyles = StyleSheet.create({
   searchInput: {
     marginBottom: 16,
     fontSize: 20,
+    backgroundColor:'#FFFFFF',
+    borderWidth:1,
+    
   },
   separator: {
     height: 1,
@@ -951,10 +954,11 @@ const Liststyles = StyleSheet.create({
     marginRight: 10,
   },
   iconGroup: {
-    marginBottom: 4,
+    marginBottom: 2,
+    paddingTop:1,
   },
   list: {
-    marginTop: 10,
+    marginTop: 12,
   },
 });
 

@@ -102,7 +102,7 @@
 52-->[app.notifee:core:202108261754] C:\Users\HP\.gradle\caches\transforms-3\2cbc967af02d76bc0c7a34d08a9b4273\transformed\jetified-core-202108261754\AndroidManifest.xml:24:9-35
 53
 54    <application
-54-->C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:10:5-29:19
+54-->C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:10:5-30:19
 55        android:name="com.fyp.MainApplication"
 55-->C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:11:9-40
 56        android:allowBackup="false"
@@ -127,7 +127,7 @@
 66            android:exported="false" />
 66-->C:\Users\HP\fyp\android\app\src\debug\AndroidManifest.xml:11:84-108
 67        <activity
-67-->C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:17:9-28:20
+67-->C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:17:9-29:20
 68            android:name="com.fyp.MainActivity"
 68-->C:\Users\HP\fyp\android\app\src\main\AndroidManifest.xml:18:13-41
 69            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
